@@ -40,9 +40,9 @@ if ($userId > 0) {
 
 
 if ($document_id > 0) {
-    // Fetch document details
+    // Fetch document details without content
     $sql_document = "
-        SELECT d.id, d.title, d.content, dep.name AS department_name 
+        SELECT d.id, d.title, dep.name AS department_name 
         FROM documents d
         LEFT JOIN departments dep ON d.department_id = dep.id
         WHERE d.id = ?";
@@ -60,6 +60,7 @@ if ($document_id > 0) {
 } else {
     die("Invalid document ID.");
 }
+
 
 $conn->close();
 ?> 
@@ -85,6 +86,9 @@ $conn->close();
     <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
     
     <style>
@@ -188,7 +192,7 @@ $conn->close();
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fas fa-fw fa-file-alt"></i>Documents</a>
                                 <div id="submenu-2" class="collapse submenu" >
                                     <ul class="nav flex-column" id="departmentList">
-                                        <!-- 👥 HR Documents -->
+                                        <!--  HR Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-hr" aria-controls="submenu-hr">
                                                 👥 HR Documents
@@ -212,7 +216,7 @@ $conn->close();
                                             </div>
                                         </li>
 
-                                        <!-- 💰 Finance Documents -->
+                                        <!--  Finance Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-finance" aria-controls="submenu-finance">
                                                 💰 Finance Documents
@@ -236,7 +240,7 @@ $conn->close();
                                             </div>
                                         </li>
 
-                                        <!-- 🚚 Logistics Documents -->
+                                        <!--  Logistics Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-logistics" aria-controls="submenu-logistics">
                                                 🚚 Logistics Documents
@@ -259,7 +263,7 @@ $conn->close();
                                             </div>
                                         </li>
 
-                                        <!-- 🏢 Administrative Documents -->
+                                        <!--  Administrative Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-admin" aria-controls="submenu-admin">
                                                 🏢 Administrative Documents

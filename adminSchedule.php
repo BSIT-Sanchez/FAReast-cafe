@@ -31,7 +31,7 @@ echo "<script>
     <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <title>far-east-cafe - Bootstrap 4 Admin Dashboard Template</title>
+    <title>far-east-cafe</title>
     <style>
         .close-icon {
     transition: transform 0.2s ease, color 0.2s ease; /* Smooth transition */
@@ -93,7 +93,7 @@ echo "<script>
                                     <h5 class="mb-0 text-white nav-user-name"> <?php echo htmlspecialchars($_SESSION['email']); ?></h5>
                                    
                                 </div>
-                                <a class="dropdown-item" href="account.php"><i class="fas fa-user mr-2"></i>Account</a>
+                                <a class="dropdown-item" href="visitorAccount.php"><i class="fas fa-user mr-2"></i>Account</a>
                                
                                 <a class="dropdown-item" onclick="logout()" style="cursor: pointer;"><i class="fas fa-power-off mr-2"></i>Logout</a>
                             </div>
@@ -108,7 +108,7 @@ echo "<script>
         <!-- ============================================================== -->
         <!-- left sidebar -->
         <!-- ============================================================== -->
-        <div class="nav-left-sidebar sidebar-dark">
+              <div class="nav-left-sidebar sidebar-dark">
             <div class="menu-list">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
@@ -128,7 +128,7 @@ echo "<script>
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fas fa-fw fa-file-alt"></i>Documents</a>
                                 <div id="submenu-2" class="collapse submenu" >
                                     <ul class="nav flex-column" id="departmentList">
-                                        <!-- 👥 HR Documents -->
+                                        <!--  HR Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-hr" aria-controls="submenu-hr">
                                                 👥 HR Documents
@@ -279,7 +279,9 @@ echo "<script>
                                                             </ul>
                                                         </div>
                                                     </li>
-                                                     
+                                                      <li class="nav-item">
+                                            <a class="nav-link" href="adminSchedule.php">Visitor Appointment Scheduling</a>
+                                        </li>
                                                     
                                                     
                                                 </ul>
@@ -327,73 +329,54 @@ echo "<script>
                     <!-- ============================================================== -->
                     <!-- end pageheader  -->
                     <!-- ============================================================== -->
-                    <div class="ecommerce-widget">
-
-                        <div class="row">
-                        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="text-muted">Budget Summary</h5>
-            <div class="metric-value d-inline-block">
-                <!-- This element will be updated with the total count -->
-                <h1 class="mb-1" id="budget-count" ></h1>
-            </div>
-           
+                   <div class="container mt-4">
+    <h2>Visitor Appointment Scheduling</h2>
+    <form id="appointmentForm">
+        <input type="hidden" id="id"> <!-- Hidden input for updating -->
+        <div class="mb-3">
+            <label for="visitor_name" class="form-label">Visitor Name</label>
+            <input type="text" class="form-control" id="visitor_name" required>
         </div>
-        <div id="sparkline-revenue"></div>
-    </div>
-</div>
-
-<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="text-muted">Inventory & Stock</h5>
-            <div class="metric-value d-inline-block">
-                <h1 class="mb-1" id="inventory-count"></h1>
-            </div>
+        <div class="mb-3">
+            <label for="visitor_email" class="form-label">Visitor Email</label>
+            <input type="email" class="form-control" id="visitor_email" required>
         </div>
-        <div id="sparkline-revenue2"></div>
-    </div>
-</div>
-<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="text-muted">Reports</h5>
-            <div class="metric-value d-inline-block">
-                <h1 class="mb-1" id="reports-count"></h1>
-            </div>
-            <div class="metric-label d-inline-block float-right text-primary font-weight-bold">
-                <span id="reports-status">N/A</span>
-            </div>
+        <div class="mb-3">
+            <label for="appointment_date" class="form-label">Appointment Date</label>
+            <input type="date" class="form-control" id="appointment_date" required>
         </div>
-        <div id="sparkline-revenue3"></div>
-    </div>
-</div>
-
-<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-    <div class="card">
-        <div class="card-body">
-            <h5 class="text-muted">Shipping & Delivery</h5>
-            <div class="metric-value d-inline-block">
-                <h1 class="mb-1" id="shippingDeliveryCount">0</h1> <!-- Dynamic Count Here -->
-            </div>
-            
+        <div class="mb-3">
+            <label for="appointment_time" class="form-label">Appointment Time</label>
+            <input type="time" class="form-control" id="appointment_time" required>
         </div>
-        <div id="sparkline-revenue4"></div>
-    </div>
+        <button type="submit" class="btn btn-primary">Schedule Appointment</button>
+        <button type="button" class="btn btn-warning d-none" id="updateBtn">Update Appointment</button>
+        <button type="button" class="btn btn-secondary d-none" id="cancelBtn">Cancel</button>
+    </form>
+
+    <h3 class="mt-4">Appointments List</h3>
+    <ul id="appointmentList" class="list-group"></ul>
 </div>
-
-                        
-
-                       
-                      
-                    </div>
-                </div>
             </div>
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-          
+            <div class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                             Copyright  2018 far-east-cafe. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="text-md-right footer-links d-none d-sm-block">
+                                <a href="javascript: void(0);">About</a>
+                                <a href="javascript: void(0);">Support</a>
+                                <a href="javascript: void(0);">Contact Us</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- ============================================================== -->
             <!-- end footer -->
             <!-- ============================================================== -->
@@ -646,54 +629,110 @@ async function fetchUserDetails(userId) {
     }
 }
 
+ document.getElementById("appointmentForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    const appointmentId = document.getElementById("appointment_id").value;
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Fetch Budget Summary Count
-    fetch("https://admin.fareastcafeshop.com/api/summary_api.php")
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("budget-count").textContent = data.count ?? "N/A";
-        })
-        .catch(error => {
-            console.error("Error fetching budget count:", error);
-            document.getElementById("budget-count").textContent = "Error";
-        });
+    const formData = {
+        visitor_name: document.getElementById("visitor_name").value,
+        visitor_email: document.getElementById("visitor_email").value,
+        appointment_date: document.getElementById("appointment_date").value,
+        appointment_time: document.getElementById("appointment_time").value
+    };
 
-    // Fetch Inventory Count
-    fetch("https://admin.fareastcafeshop.com/api/inventory.php")
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("inventory-count").textContent = data.count ?? "N/A";
-        })
-        .catch(error => {
-            console.error("Error fetching inventory data:", error);
-            document.getElementById("inventory-count").textContent = "Error";
-        });
+    const url = "https://admin.fareastcafeshop.com/api/appointment.php";
+    const method = appointmentId ? "PUT" : "POST";
 
-    // Fetch Reports Count
-    fetch("https://admin.fareastcafeshop.com/api/reports.php")
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("reports-count").textContent = data.count ?? "N/A";
-            document.getElementById("reports-status").textContent = data.count > 0 ? "Active" : "N/A";
-        })
-        .catch(error => {
-            console.error("Error fetching reports data:", error);
-            document.getElementById("reports-count").textContent = "Error";
-            document.getElementById("reports-status").textContent = "Error";
-        });
+    if (appointmentId) formData.id = appointmentId; // Include ID for update
 
-    // Fetch Shipping Delivery Count
-    fetch("https://admin.fareastcafeshop.com/api/delivery.php")
-        .then(response => response.json())
-        .then(data => {
-            document.querySelector("#shippingDeliveryCount").innerText = data.count ?? "0";
-        })
-        .catch(error => {
-            console.error("Error fetching shipping delivery count:", error);
-            document.querySelector("#shippingDeliveryCount").innerText = "N/A";
-        });
+    fetch(url, {
+        method: method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        showToast(data.message, "success");
+        resetForm();
+        loadAppointments();
+    })
+    .catch(error => showToast("Error: " + error.message, "error"));
 });
+
+function loadAppointments() {
+    fetch("https://admin.fareastcafeshop.com/api/appointment.php")
+    .then(response => response.json())
+    .then(data => {
+        let list = document.getElementById("appointmentList");
+        list.innerHTML = "";
+        data.data.forEach(appointment => {
+            list.innerHTML += `
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${appointment.visitor_name} - ${appointment.appointment_date} (${appointment.status})
+                    <div>
+                        <button class="btn btn-sm btn-warning" onclick="editAppointment(${appointment.id}, '${appointment.visitor_name}', '${appointment.visitor_email}', '${appointment.appointment_date}', '${appointment.appointment_time}')">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteAppointment(${appointment.id})">Delete</button>
+                    </div>
+                </li>`;
+        });
+    });
+}
+
+function editAppointment(id, name, email, date, time) {
+    document.getElementById("id").value = id;
+    document.getElementById("visitor_name").value = name;
+    document.getElementById("visitor_email").value = email;
+    document.getElementById("appointment_date").value = date;
+    document.getElementById("appointment_time").value = time;
+
+    document.querySelector("button[type='submit']").classList.add("d-none");
+    document.getElementById("updateBtn").classList.remove("d-none");
+    document.getElementById("cancelBtn").classList.remove("d-none");
+}
+
+document.getElementById("updateBtn").addEventListener("click", function() {
+    document.getElementById("appointmentForm").dispatchEvent(new Event("submit"));
+});
+
+document.getElementById("cancelBtn").addEventListener("click", function() {
+    resetForm();
+});
+
+function deleteAppointment(id) {
+    if (!confirm("Are you sure you want to delete this appointment?")) return;
+
+    fetch("https://admin.fareastcafeshop.com/api/appointment.php", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: id })
+    })
+    .then(response => response.json())
+    .then(data => {
+        showToast(data.message, "success");
+        loadAppointments();
+    })
+    .catch(error => showToast("Error: " + error.message, "error"));
+}
+
+function resetForm() {
+    document.getElementById("appointmentForm").reset();
+    document.getElementById("appointment_id").value = "";
+
+    document.querySelector("button[type='submit']").classList.remove("d-none");
+    document.getElementById("updateBtn").classList.add("d-none");
+    document.getElementById("cancelBtn").classList.add("d-none");
+}
+
+function showToast(message, type) {
+    alert(`${type.toUpperCase()}: ${message}`);
+}
+
+document.addEventListener("DOMContentLoaded", loadAppointments);
+
+        
+
+        
+
 
 async function logout() {
             await fetch("logout.php", { method: "POST", credentials: "include" });

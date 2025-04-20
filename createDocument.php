@@ -32,6 +32,7 @@ echo "<script>
     <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <title>far-east-cafe - Bootstrap 4 Admin Dashboard Template</title>
     <style>
         .close-icon {
@@ -315,7 +316,7 @@ echo "<script>
                     
                 </div>
 
-                <div class="container mt-4 d-flex justify-content-center">
+               <div class="container mt-4 d-flex justify-content-center">
     <div class="card shadow-lg" style="width: 50%;">
         <div class="card-header bg-primary text-white">
             <h4 class="mb-0">Add New Document</h4>
@@ -323,16 +324,18 @@ echo "<script>
         <div class="card-body">
             <form id="documentForm">
                 <div class="mb-3">
-                    <label for="title" class="form-label">Document Title</label>
-                    <input type="text" class="form-control" id="title" name="title" required>
+                    <label for="title" class="form-label">Select Document Type</label>
+                    <select class="form-control" id="title" name="title" required>
+                        <option value="">Select a Document Type</option>
+                        <option value="Shipping & Delivery">Shipping & Delivery</option>
+                        <option value="Inventory & Stock">Inventory & Stock</option>
+                        <option value="Budget Summary">Budget Summary</option>
+                        <option value="Employee Records">Employee Records</option>
+                        <option value="Accounting & Reports">Accounting & Reports</option>
+                    </select>
                 </div>
 
-                <div class="mb-3">
-                    <label for="content" class="form-label">Content</label>
-                    <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
-                </div>
-
-                <div class="mb-3">
+               <div class="mb-3">
                     <label for="department" class="form-label">Select Department</label>
                     <select class="form-control" id="department" name="department_id" required>
                         <option value="">Loading departments...</option>
@@ -341,8 +344,6 @@ echo "<script>
 
                 <button type="submit" class="btn btn-primary w-100">Submit</button>
             </form>
-
-            
         </div>
     </div>
 </div>
@@ -378,68 +379,7 @@ echo "<script>
 </div>
 
 
-<script>
 
-
- // Toastify function
- function showToast(message, type) {
-            Toastify({
-                text: message,
-                style: {
-                    background: type === 'success' 
-                        ? "linear-gradient(to right, #00b09b, #96c93d)" 
-                        : "linear-gradient(to right, #ff5f6d, #ffc371)"
-                },
-                duration: 3000,
-                close: true
-            }).showToast();
-        }
-document.addEventListener("DOMContentLoaded", function() {
-    fetch(" https://admin.fareastcafeshop.com/api/department_api.php")
-        .then(response => response.json())
-        .then(data => {
-            const departmentSelect = document.getElementById("department");
-            departmentSelect.innerHTML = '<option value="">Select a Department</option>'; // Default option
-            data.forEach(department => {
-                departmentSelect.innerHTML += `<option value="${department.id}">${department.name}</option>`;
-            });
-        })
-        .catch(error => {
-            console.error("Error fetching departments:", error);
-            document.getElementById("department").innerHTML = '<option value="">Error loading departments</option>';
-        });
-});
-
-document.getElementById("documentForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    const formData = {
-        title: document.getElementById("title").value,
-        content: document.getElementById("content").value,
-        department_id: document.getElementById("department").value
-    };
-
-    fetch(" https://admin.fareastcafeshop.com/api/document.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showToast("Document added successfully!", "success");
-            document.getElementById("documentForm").reset();
-        } else {
-            showToast(data.message, "success");
-        }
-    })
-    .catch(error => {
-        showToast("Error: " + error.message, "error");
-    });
-});
-
-
-</script>
 
 
 <script src="assets/vendor/jquery/jquery-3.3.1.min.js"></script>
@@ -466,19 +406,46 @@ document.getElementById("documentForm").addEventListener("submit", function(even
    
     <script>
 
-         // Toastify function
          function showToast(message, type) {
-            Toastify({
-                text: message,
-                style: {
-                    background: type === 'success' 
-                        ? "linear-gradient(to right, #00b09b, #96c93d)" 
-                        : "linear-gradient(to right, #ff5f6d, #ffc371)"
-                },
-                duration: 3000,
-                close: true
-            }).showToast();
+    Toastify({
+        text: message,
+        backgroundColor: type === 'success' 
+            ? "linear-gradient(to right, #00b09b, #96c93d)" 
+            : "linear-gradient(to right, #ff5f6d, #ffc371)",
+        duration: 3000,
+        close: true
+    }).showToast();
+}
+
+        
+        
+        document.getElementById("documentForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const formData = {
+        title: document.getElementById("title").value,
+        department_id: document.getElementById("department").value
+    };
+
+    fetch("https://admin.fareastcafeshop.com/api/document.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 201) { 
+            showToast("Document added successfully!", "success"); 
+            document.getElementById("documentForm").reset();
+        } else {
+            showToast(data.message, "error");
         }
+    })
+    .catch(error => {
+        showToast("Error: " + error.message, "error");
+    });
+});
+
 
 document.addEventListener("DOMContentLoaded", function () {
     loadDepartmentsSidebar()
@@ -710,6 +677,21 @@ async function loadDocuments(departmentId, documentList) {
         console.error(`Error loading documents for department ${departmentId}:`, error);
     }
 }
+document.addEventListener("DOMContentLoaded", function() {
+    fetch(" https://admin.fareastcafeshop.com/api/department_api.php")
+        .then(response => response.json())
+        .then(data => {
+            const departmentSelect = document.getElementById("department");
+            departmentSelect.innerHTML = '<option value="">Select a Department</option>'; // Default option
+            data.forEach(department => {
+                departmentSelect.innerHTML += `<option value="${department.id}">${department.name}</option>`;
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching departments:", error);
+            document.getElementById("department").innerHTML = '<option value="">Error loading departments</option>';
+        });
+});
 
     </script>
 </body>

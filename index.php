@@ -33,6 +33,34 @@
         padding-top: 40px;
         padding-bottom: 40px;
     }
+    .splash-container {
+            width: 100%;
+            max-width: 400px; /* Set max width to prevent form stretching */
+            padding: 20px;
+        }
+
+        .logo-img {
+            max-width: 150px; /* Adjust logo size */
+            height: auto;
+            display: block;
+            margin: 0 auto 10px; /* Center logo and add space below */
+        }
+
+        .card {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group-text {
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .logo-img {
+                max-width: 120px; /* Adjust for mobile */
+            }
+        }
     
     </style>
 </head>
@@ -43,7 +71,7 @@
     <!-- ============================================================== -->
     <div class="splash-container">
         <div class="card ">
-            <div class="card-header text-center"><a href="../index.html"><img class="logo-img" src="../assets/images/logo.png" alt="logo"></a><span class="splash-description">Please enter your user information.</span></div>
+            <div class="card-header text-center"><a href="../index.html"><img class="logo-img" src="../assets/images/logo.jpg" alt="logo"></a><span class="splash-description"></span></div>
             <div id="error-message" class="alert alert-danger d-none"></div>
             <div class="card-body">
                 <form id="loginForm">
@@ -82,8 +110,24 @@
     <!-- Optional JavaScript -->
     <script src="../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
     <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
+     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
     <script>
+    
+      // Toastify function
+         function showToast(message, type) {
+            Toastify({
+                text: message,
+                style: {
+                    background: type === 'success' 
+                        ? "linear-gradient(to right, #00b09b, #96c93d)" 
+                        : "linear-gradient(to right, #ff5f6d, #ffc371)"
+                },
+                duration: 3000,
+                close: true
+            }).showToast();
+        }
+
         document.querySelector("form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -101,12 +145,13 @@
     console.log(data);
 
     if (data.success) {
-        console.log("Redirecting to: ", data.redirect);
+        showToast("Login successful! Redirecting...", "success");
         localStorage.setItem("user_id", data.id);
-        window.location.href = data.redirect;e
+        setTimeout(() => {
+            window.location.href = data.redirect;
+        }, 1500);
     } else {
-        document.getElementById("error-message").classList.remove("d-none");
-        document.getElementById("error-message").textContent = data.error; // Show error message
+        showToast(data.error, "error");
     }
 });
 

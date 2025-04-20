@@ -89,7 +89,7 @@ echo "<script>
                                 <h5 class="mb-0 text-white nav-user-name"> <?php echo htmlspecialchars($_SESSION['email']); ?></h5>
                                  
                                 </div>
-                                <a class="dropdown-item" href="account.php"><i class="fas fa-user mr-2"></i>Account</a>
+                                <a class="dropdown-item" href="visitorAccount.php"><i class="fas fa-user mr-2"></i>Account</a>
                                
                                 <a class="dropdown-item" onclick="logout()" style="cursor: pointer;"><i class="fas fa-power-off mr-2"></i>Logout</a>
                             </div>
@@ -112,173 +112,10 @@ echo "<script>
                                 Menu
                             </li>
                             <li class="nav-item ">
-                            <a class="nav-link active" href="dashboard.php"><i class="fa fa-fw fa-user-circle"></i>Dashboard <span class="badge badge-success">6</span></a>
+                            <a class="nav-link active" href="visitorDashboard.php"><i class="fa fa-fw fa-user-circle"></i>Appointment Schedule<span class="badge badge-success">6</span></a>
                               
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fas fa-fw fa-file-alt"></i>Documents</a>
-                                <div id="submenu-2" class="collapse submenu" >
-                                    <ul class="nav flex-column" id="departmentList">
-                                        <!-- 👥 HR Documents -->
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-hr" aria-controls="submenu-hr">
-                                                 HR Documents
-                                            </a>
-                                            <div id="submenu-hr" class="collapse submenu">
-                                                <ul class="nav flex-column" id="documentList">
-                                                    
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="employee-records.html">Employee Records</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="attendance-payroll.html">Attendance & Payroll</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="performance-compliance.html">Performance & Compliance</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="recruitment-hiring.html">Recruitment & Hiring</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-
-                                        <!-- 💰 Finance Documents -->
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-finance" aria-controls="submenu-finance">
-                                                💰 Finance Documents
-                                            </a>
-                                            <div id="submenu-finance" class="collapse submenu">
-                                                <ul class="nav flex-column">
-                                                   
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="accounting-reports.html">Accounting & Reports</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="transactions-approvals.html">Transactions & Approvals</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="tax-compliance.html">Tax & Compliance</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="asset-management.html">Asset Management</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-
-                                        <!--  Logistics Documents -->
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-logistics" aria-controls="submenu-logistics">
-                                                🚚 Logistics Documents
-                                            </a>
-                                            <div id="submenu-logistics" class="collapse submenu">
-                                                <ul class="nav flex-column">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="logistics-dashboard.html">Logistics Dashboard</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="inventory-stock.html">Inventory & Stock</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="shipping-delivery.html">Shipping & Delivery</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="supplier-order-management.html">Supplier & Order Management</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-
-                                        <!-- 🏢 Administrative Documents -->
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-admin" aria-controls="submenu-admin">
-                                                🏢 Administrative Documents
-                                            </a>
-                                            <div id="submenu-admin" class="collapse submenu">
-                                                <ul class="nav flex-column">
-                                                    
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="corporate-legal.html">Corporate & Legal</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="office-management.html">Office Management</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="customer-vendor-relations.html">Customer & Vendor Relations</a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="it-security.html">IT & Security</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-
-                                        
-                                    </ul>
-                                </div>
-                            </li>
-                            
-           
-                           
-                          
-                            <li class="nav-divider">
-                                Features
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-6" aria-controls="submenu-6"><i class="fas fa-fw fa-window-maximize"></i> Pages </a>
-                                <div id="submenu-6" class="collapse submenu" >
-                                    <ul class="nav flex-column">
-
-                                       <li class="nav-item">
-                                            <a class="nav-link" href="createDocument.php">Create Documents</a>
-                                        </li>
-
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">Landing Page</a>
-                                        </li>
-                                        
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="login.php">Login</a>
-                                        </li>
-                                       
-                                        
-                                        
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-7" aria-controls="submenu-7">
-                                    <i class="fas fa-fw fa-cogs"></i> Settings <span class="badge badge-secondary">New</span>
-                                </a>
-                                <div id="submenu-7" class="collapse submenu">
-                                    <ul class="nav flex-column">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-user" aria-controls="submenu-user">
-                                                User Mananagement
-                                            </a>
-                                            <div id="submenu-user" class="collapse submenu">
-                                                <ul class="nav flex-column">
-
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" href="user-management.php"> Department & Role</a>
-                                                        <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-department" aria-controls="submenu-department"> Lists of Department</a>
-
-                                                        <div id="submenu-department" class="collapse submenulist">
-                                                            <ul class="nav flex-column" id="department-List">
-                                                                <!-- Dynamic Departments will be added here -->
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                    
-                                                    
-                                                </ul>
-                                            </div>
-                                        </li>
-                                       
-                                    </ul>
-                                </div>
-                            </li>
+                         
                             
                            
                         </ul>

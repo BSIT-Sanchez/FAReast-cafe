@@ -45,28 +45,32 @@ if (!$user) {
 // Store user data in session
 $_SESSION['id'] = $user['id'];
 $_SESSION['name'] = $user['name'];
-$_SESSION['email'] = $user['email']; // Store email in session
+$_SESSION['email'] = $user['email'];
 $_SESSION['department_id'] = $user['department_id'];
 $_SESSION['department_name'] = $user['department_name'];
 $_SESSION['role_id'] = $user['role_id'];
 $_SESSION['role_name'] = $user['role_name'];
 
-// Check if the user is an Admin 
-$isAdmin = strtolower(trim($user['department_name'])) === 'admin';
+// Determine user redirection
+$role = strtolower(trim($user['role_name']));
+if ($role === "admin") {
+    $redirectUrl = "dashboard.php";
+} elseif ($role === "visitor") {
+    $redirectUrl = "visitorDashboard.php";
+} else {
+    $redirectUrl = "404Page.php";
+}
 
-// Redirect based on user role
-$redirectUrl = $isAdmin ? "dashboard.php" : "404Page.php";
-
+// Return response
 echo json_encode([
     "success" => true,
     "id" => $_SESSION['id'],
     "name" => $_SESSION['name'],
-    "email" => $_SESSION['email'], // Include email in response
+    "email" => $_SESSION['email'],
     "department_id" => $_SESSION['department_id'],
     "department_name" => $_SESSION['department_name'],
     "role_id" => $_SESSION['role_id'],
     "role_name" => $_SESSION['role_name'],
-    "is_admin" => $isAdmin,
     "redirect" => $redirectUrl
 ]);
 exit();

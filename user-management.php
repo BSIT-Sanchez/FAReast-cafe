@@ -31,7 +31,10 @@ echo "<script>
     <link rel="stylesheet" href="assets/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="assets/vendor/charts/c3charts/c3.css">
     <link rel="stylesheet" href="assets/vendor/fonts/flag-icon-css/flag-icon.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"></div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<!-- Toastify.js Script -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
    
     <title>Admin Dashboard </title>
 
@@ -58,7 +61,7 @@ echo "<script>
         <!-- ============================================================== -->
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <a class="navbar-brand" href="index.php">Admin</a>
+                <a class="navbar-brand" href="dashboard.php">Admin</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -176,7 +179,7 @@ echo "<script>
                                         <!-- 🚚 Logistics Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-logistics" aria-controls="submenu-logistics">
-                                                🚚 Logistics Documents
+                                                 Logistics Documents
                                             </a>
                                             <div id="submenu-logistics" class="collapse submenu">
                                                 <ul class="nav flex-column">
@@ -196,7 +199,7 @@ echo "<script>
                                             </div>
                                         </li>
 
-                                        <!-- 🏢 Administrative Documents -->
+                                        <!--  Administrative Documents -->
                                         <li class="nav-item">
                                             <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-admin" aria-controls="submenu-admin">
                                                 🏢 Administrative Documents
@@ -343,8 +346,15 @@ echo "<script>
             <div class="modal-body">
                 <form id="departmentForm">
                     <div class="form-group">
-                        <label for="department_name">Department Name</label>
-                        <input type="text" class="form-control" name="department_name" id="department_name" placeholder="Enter department name">
+                        <label for="department_name">Select Department</label>
+                        <select class="form-control" name="department_name" id="department_name">
+                            <option value="" selected disabled>Select Department</option>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="HR">HR</option>
+                            <option value="LOGISTIC">LOGISTIC</option>
+                            <option value="FINANCE">FINANCE</option>
+                            <option value="CORE">CORE</option>
+                        </select>
                     </div>
                     <div class="modal-footer d-flex justify-content-around">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -355,6 +365,7 @@ echo "<script>
         </div>
     </div>
 </div>
+
 
 <!-- Create Role Modal -->
 <div class="modal fade" id="createRoleModal" tabindex="-1" role="dialog" aria-labelledby="createRoleLabel" aria-hidden="true">
@@ -453,7 +464,7 @@ echo "<script>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                             Copyright © 2018 far-east-cafe. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
+                             Copyright  2018 far-east-cafe. All rights reserved. Dashboard by <a href="https://colorlib.com/wp/">Colorlib</a>.
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="text-md-right footer-links d-none d-sm-block">
@@ -497,7 +508,7 @@ echo "<script>
     <script src="assets/vendor/charts/c3charts/d3-5.4.0.min.js"></script>
     <script src="assets/vendor/charts/c3charts/C3chartjs.js"></script>
     <script src="assets/libs/js/dashboard-ecommerce.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
     
 
     <script>
@@ -520,14 +531,14 @@ document.addEventListener("DOMContentLoaded", function () {
     loadDepartmentsSidebar()
 });
 
-// Create Department
 document.getElementById('departmentForm').addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    const departmentName = document.getElementById('department_name').value;
+    const departmentSelect = document.getElementById('department_name');
+    const departmentName = departmentSelect.value.trim();
 
-    if (departmentName === "") {
-        showToast('Department name is required!', 'error');
+    if (!departmentName) {
+        showToast('Please select a department!', 'error');
         return;
     }
 
@@ -538,16 +549,21 @@ document.getElementById('departmentForm').addEventListener('submit', async funct
             body: JSON.stringify({ name: departmentName })
         });
 
-        if (!response.ok) throw new Error('Department creation failed');
+        const result = await response.json(); // Parse API response
 
+        if (!response.ok || result.error) {
+            throw new Error(result.error || 'Department creation failed!');
+        }
+
+        // Success Toast
         showToast('Department created successfully!', 'success');
         document.getElementById('departmentForm').reset();
-        loadDepartments(); // Refresh department list
-         // Delay before reloading for better UX
-         setTimeout(() => location.reload(), 1500);
+        $('#createDepartmentModal').modal('hide'); // Close modal
+        loadDepartments(); // Refresh dropdown dynamically
+        
     } catch (error) {
         console.error('Error:', error);
-        showToast(error.message, 'error');
+        showToast(error.message || 'An error occurred!', 'error'); // Error Toast
     }
 });
 
@@ -629,6 +645,30 @@ async function loadDepartmentsSidebar() {
         console.error('Error loading departments:', error);
     }
 }
+document.addEventListener("DOMContentLoaded", function () {
+    const departmentSelect = document.getElementById("department");
+    const departmentSelectModal = document.getElementById("department_select"); // For modal
+
+    // Fetch Departments
+    fetch("https://admin.fareastcafeshop.com/api/department_api.php")
+        .then(response => response.json())
+        .then(data => {
+            if (!data || data.length === 0) {
+                console.error("No departments found!");
+                return;
+            }
+
+            departmentSelect.innerHTML = '<option value="" selected disabled>Select Department</option>';
+            departmentSelectModal.innerHTML = '<option value="" selected disabled>Select Department</option>';
+
+            data.forEach(dept => {
+                let option = `<option value="${dept.id}">${dept.name}</option>`;
+                departmentSelect.innerHTML += option;
+                departmentSelectModal.innerHTML += option; // Also update modal select
+            });
+        })
+        .catch(error => console.error("Error fetching departments:", error));
+});
 
 
 
@@ -720,10 +760,12 @@ async function loadDepartmentsSidebar() {
                 showToast(data.error, "error"); // Show other backend validation errors
             }
         } else if (data.message && !data.error) {
-            showToast(data.message, "success"); // ✅ Ensure success message works
-
+            
             // Delay before reloading for better UX
             setTimeout(() => location.reload(), 1500);
+            showToast(data.message, "success"); // ✅ Ensure success message works
+
+            
         }
     })
     .catch(error => {
